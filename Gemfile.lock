@@ -95,14 +95,11 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
-  revision: 5a7c54cace96881a3963ab2fd881ca6ea3f57372
+  revision: cbc6c889ebf52dc03b038afde477c5d9c082e76f
   branch: required_for_knapsack_instances
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
-      sentry-rails
-      sentry-ruby
-      sentry-sidekiq
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
@@ -1513,6 +1510,9 @@ DEPENDENCIES
   scss_lint
   secure_headers
   selenium-webdriver (= 4.8.1)
+  sentry-rails
+  sentry-ruby
+  sentry-sidekiq
   shoulda-matchers (~> 4.0)
   sidekiq (< 7.0)
   simplecov
