@@ -55,8 +55,9 @@ class HyraxListener
   # def on_collection_membership_update
   # end
 
-  # def on_file_characterized
-  # end
+  def on_file_characterized(event)
+    pdf_viewer_and_download_button(event)
+  end
 
   # def on_file_downloaded
   # end
@@ -99,4 +100,17 @@ class HyraxListener
 
   # def on_object_metadata_updated
   # end
+
+  private
+
+  def pdf_viewer_and_download_button(event)
+    file_set = event[:file_set]
+    return unless file_set.original_file.pdf?
+
+    parent_work = Hyrax.custom_queries.find_parent_work(resource: file_set)
+    parent_work.show_pdf_viewer = '1'
+    parent_work.show_pdf_download_button = '1'
+
+    Hyrax.persister.save(resource: parent_work)
+  end
 end
