@@ -71,13 +71,11 @@ module Hyku
     # End Featured Collections Methods
 
     def show_pdf_viewer?
-      Flipflop.default_pdf_viewer? && file_set_presenters.any?(&:pdf?)
-      # TODO: Valkyrize PDF.js feature
-      # return unless Flipflop.default_pdf_viewer?
-      # return unless show_pdf_viewer
-      # return unless file_set_presenters.any?(&:pdf?)
+      return unless Flipflop.default_pdf_viewer?
+      return unless show_pdf_viewer
+      return unless file_set_presenters.any?(&:pdf?)
 
-      # show_pdf_viewer.first.to_i.positive?
+      show_for_pdf?(show_pdf_viewer)
     end
 
     def show_pdf_download_button?
@@ -85,7 +83,7 @@ module Hyku
       return unless file_set_presenters.any?(&:pdf?)
       return unless show_pdf_download_button
 
-      show_pdf_download_button.first.to_i.positive?
+      show_for_pdf?(show_pdf_download_button)
     end
 
     def viewer?
@@ -127,6 +125,11 @@ module Hyku
 
     def extract_video_embed_presence
       solr_document[:video_embed_tesim]&.first&.present?
+    end
+
+    def show_for_pdf?(field)
+      # With Valkyrie, we store the field as a boolean while AF stores it as an Array
+      valkyrie_presenter? ? field : field.first.to_i.positive?
     end
   end
 end

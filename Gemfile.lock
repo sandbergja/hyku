@@ -147,10 +147,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: a5a0ae9e56df857a92fc53ae86216cbb007db47a
+  revision: 54bb7b22aaf44dcdda76e05fb88b65095b2e899f
   branch: double_combo
   specs:
-    hyrax (5.0.0)
+    hyrax (5.0.1)
       active-fedora (~> 14.0)
       almond-rails (~> 0.1)
       awesome_nested_set (~> 3.1)
@@ -201,7 +201,7 @@ GIT
       sass-rails (~> 6.0)
       select2-rails (~> 3.5)
       signet
-      sprockets (~> 3.7)
+      sprockets (= 3.7.2)
       tinymce-rails (~> 5.10)
       valkyrie (~> 3.1.1)
       view_component (~> 2.74.1)
