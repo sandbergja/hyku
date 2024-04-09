@@ -22,6 +22,19 @@ module HyraxHelper
     Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
 
+  def favicon(size)
+    icon = Site.instance.favicon
+    if icon
+      case icon
+      when FaviconUploader
+        return Site.instance.favicon.url(size)
+      when String
+        return Site.instance.favicon
+      end
+    end
+    nil
+  end
+
   def logo_image
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end
@@ -49,5 +62,18 @@ module HyraxHelper
     return hyrax_group_name.titleize if label.include?('translation missing:')
 
     label
+  end
+
+  ##
+  # OVERRIDE Hyrax::FileSetHelper#display_media_download_link?
+  #
+  # @return [Boolean] whether to display the download link for the given file
+  #   set
+  def display_media_download_link?(*args)
+    if Site.account.settings[:allow_downloads].nil? || Site.account.settings[:allow_downloads].to_i.nonzero?
+      super
+    else
+      false
+    end
   end
 end

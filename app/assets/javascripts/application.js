@@ -19,6 +19,9 @@
 //= require jquery.dataTables
 //= require dataTables.bootstrap4
 //= require cropper.min
+
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require stat_slider
 //= require turbolinks
 //= require cocoon
@@ -64,5 +67,4 @@
 //= require blacklight_range_limit/range_limit_slider
 //= require bootstrap-slider
 //= require jquery.flot.js
-
 //= require tinymce

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  include HykuHelper
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception, prepend: true
@@ -16,6 +15,8 @@ class ApplicationController < ActionController::Base
 
   include Hyrax::ThemedLayoutController
   with_themed_layout '1_column'
+
+  include HykuHelper
 
   helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
   before_action :authenticate_if_needed

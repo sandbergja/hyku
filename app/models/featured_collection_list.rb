@@ -24,6 +24,8 @@ class FeaturedCollectionList
       collection.destroy if collection.presenter.blank?
       collection.presenter.blank?
     end
+    sort_by_title! unless manually_ordered?
+    @collections
   end
 
   delegate :empty?, to: :featured_collections
