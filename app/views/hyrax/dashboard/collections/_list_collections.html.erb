@@ -32,7 +32,7 @@
       </div>
       <%= link_to collection_presenter.show_path do %>
           <span class="sr-only"><%= t("hyrax.dashboard.my.sr.show_label") %> </span>
-          <%= collection_presenter.title_or_label %>
+          <%= markdown(collection_presenter.title_or_label) %>
       <% end %>
 
       <%# Expand arrow %>
