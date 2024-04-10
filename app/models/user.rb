@@ -50,9 +50,15 @@ class User < ApplicationRecord
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_admin? admin?
+
   def superadmin?
     has_role? :superadmin
   end
+
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_superadmin? superadmin?
 
   # This comes from a checkbox in the proprietor interface
   # Rails checkboxes are often nil or "0" so we handle that
