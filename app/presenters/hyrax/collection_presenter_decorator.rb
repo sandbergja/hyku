@@ -14,7 +14,13 @@ module Hyrax
         # OVERRIDE Hyrax - removed size
         super - [:size]
       end
+
+      def primary_terms do
+        %i[title description collection_subtitle]
+      end
     end
+
+    delegate :collection_subtitle, to: :solr_document
 
     # Add new method to check if a user has permissions to create any works.
     # This is used to restrict who can deposit new works through collections.
