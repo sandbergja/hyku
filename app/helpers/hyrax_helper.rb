@@ -63,17 +63,4 @@ module HyraxHelper
 
     label
   end
-
-  ##
-  # OVERRIDE Hyrax::FileSetHelper#display_media_download_link?
-  #
-  # @return [Boolean] whether to display the download link for the given file
-  #   set
-  def display_media_download_link?(*args)
-    if Site.account.settings[:allow_downloads].nil? || Site.account.settings[:allow_downloads].to_i.nonzero?
-      super
-    else
-      false
-    end
-  end
 end
