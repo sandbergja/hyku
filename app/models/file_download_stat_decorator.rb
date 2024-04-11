@@ -15,7 +15,7 @@ module FileDownloadStatClass
     end
     # OVERRIDE Hyrax hyrax-v3.5.0
     profile.hyrax__download(sort: 'date',
-                            start_date: start_date,
+                            start_date:,
                             end_date: Date.yesterday,
                             limit: 10_000)
            .for_file(file.id)

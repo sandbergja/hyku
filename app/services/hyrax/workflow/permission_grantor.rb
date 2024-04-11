@@ -53,7 +53,7 @@ module Hyrax
             agent_list << u if u.has_role?(:admin, Site.instance)
           end
 
-          grant_workflow_roles!(workflow_agents: workflow_agents, role_filters: nil)
+          grant_workflow_roles!(workflow_agents:, role_filters: nil)
         end
 
         grant_workflow_roles!(workflow_agents:, role_filters: nil)

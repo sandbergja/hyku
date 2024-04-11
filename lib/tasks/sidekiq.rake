@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 namespace :sidekiq do
   desc "Health check for sidekiq worker process."
   task status: [:environment] do

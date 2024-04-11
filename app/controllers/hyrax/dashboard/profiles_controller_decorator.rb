@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # OVERRIDE FILE from Hyrax v5.0.0
 
 ##

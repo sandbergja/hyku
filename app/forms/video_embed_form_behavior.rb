@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # frozen_sting_literal: true
 
 module VideoEmbedFormBehavior

@@ -11,9 +11,10 @@ class AppIndexer < Hyrax::WorkIndexer
 
   include HykuIndexing
 
-  #TODO: Extract to HykuIndexing?
+  # TODO: Extract to HykuIndexing?
 
   # Uncomment this block if you want to add custom indexing behavior:
+  # rubocop:disable Metrics/AbcSize
   def generate_solr_document
     super.tap do |solr_doc|
       solr_doc['title_ssi'] = SortTitle.new(object.title.first).alphabetical
@@ -26,6 +27,7 @@ class AppIndexer < Hyrax::WorkIndexer
       add_date(solr_doc)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def full_text(file_set_id)
     return if !Flipflop.default_pdf_viewer? || file_set_id.blank?

@@ -3,7 +3,7 @@
 namespace :hyrax do
   namespace :collections do
     desc 'Update CollectionType global id references for Hyrax 3.0.0'
-    # Note: the definition of collection_type_gid= changed in Hyrax 5.0. This
+    # NOTE: the definition of collection_type_gid= changed in Hyrax 5.0. This
     # rake task is known to work for updates to versions prior to Hyrax 5.
     # Use for later versions is unknown.
     task update_collection_type_global_ids: :environment do

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 namespace :counter_metrics do
   # bundle exec rake counter_metrics:import_investigations['pittir.hykucommons.org','spec/fixtures/csv/pittir-views.csv']
   desc 'import historical counter requests'

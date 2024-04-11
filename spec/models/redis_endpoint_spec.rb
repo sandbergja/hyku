@@ -10,7 +10,7 @@ RSpec.describe RedisEndpoint do
   subject { described_class.new(namespace:) }
 
   describe '.options' do
-    subject { described_class.new namespace: namespace }
+    subject { described_class.new namespace: }
 
     it 'uses the configured application settings' do
       expect(subject.options[:namespace]).to eq namespace

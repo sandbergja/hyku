@@ -142,27 +142,27 @@ module Hyrax
           def banner_fields
             %i[
               banner_image banner_label
-              ]
+            ]
           end
 
           def favicon_fields
             %i[
               favicon
-              ]
+            ]
           end
 
           # @return [Array<Symbol>] a list of fields that are related to the logo
           def logo_fields
             %i[
               logo_image logo_label
-              ]
+            ]
           end
 
           # @return [Array<Symbol>] a list of fields that are related to the directory
           def directory_fields
             %i[
               directory_image directory_image_label directory_image_alt_text
-              ]
+            ]
           end
 
           # @return [Array<Symbol>] a list of fields that are related to default works & collections
@@ -172,9 +172,8 @@ module Hyrax
               default_work_image
               default_collection_label
               default_work_label
-              ]
+            ]
           end
-
         end
         # rubocop:enable Metrics/BlockLength
 

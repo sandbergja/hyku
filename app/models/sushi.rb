@@ -114,7 +114,7 @@ module Sushi
     #       about the complete months of data that we have.
     def last_month_available(current_date: Time.zone.today)
       # This might raise an exception
-      first_month_available(current_date: current_date)
+      first_month_available(current_date:)
 
       # We're assuming that we have whole months, so we'll nudge the latest date towards that
       # assumption.

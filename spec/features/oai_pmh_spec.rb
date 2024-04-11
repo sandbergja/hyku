@@ -32,7 +32,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
         end
 
         it 'retrieves a single record' do
-          visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix, identifier: identifier)
+          visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix, identifier:)
           expect(page).to have_content("#{Settings.oai.prefix}:#{identifier}")
           expect(page).to have_content(work.title.first)
         end

@@ -2,6 +2,8 @@
 
 # Creates counter metrics for a single tenant.
 class GenerateCounterMetrics
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def self.generate_counter_metrics(ids: :all, limit: :all)
     fsq = "has_model_ssim: (#{Bulkrax.curation_concerns.join(' OR ')})"
     fsq += " AND id:(\"" + Array.wrap(ids).join('" OR "') + "\")" if ids.present? && ids != :all
@@ -22,19 +24,21 @@ class GenerateCounterMetrics
 
         Hyrax::CounterMetric.create!(
           worktype: work_type,
-          work_id: work_id,
-          resource_type: resource_type,
-          date: date,
-          year_of_publication: year_of_publication,
-          author: author,
-          publisher: publisher,
-          title: title,
-          total_item_investigations: total_item_investigations,
-          total_item_requests: total_item_requests
+          work_id:,
+          resource_type:,
+          date:,
+          year_of_publication:,
+          author:,
+          publisher:,
+          title:,
+          total_item_investigations:,
+          total_item_requests:
         )
       end
     end
     message = "#{self.class}.generate_counter_metrics data for IDs = #{ids.inspect} with Limit = #{limit.inspect}."
     Rails.logger.info message
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 end
