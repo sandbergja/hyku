@@ -114,7 +114,7 @@ module AccountSettings
   def public_settings(is_superadmin: false)
     all_settings.reject do |key, value|
       value[:disabled] ||
-      self.class.private_settings.include?(key.to_s) ||
+        self.class.private_settings.include?(key.to_s) ||
         (!is_superadmin && self.class.superadmin_settings.include?(key.to_sym))
     end
   end
