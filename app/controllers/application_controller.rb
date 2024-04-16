@@ -34,24 +34,6 @@ class ApplicationController < ActionController::Base
     current_account.persisted? && !current_account.is_public?
   end
 
-  # Override method from devise-guests v0.7.0 to prevent the application
-  # from attempting to create duplicate guest users
-  def guest_user
-    return @guest_user if @guest_user
-    if session[:guest_user_id]
-      # Override - added #unscoped to include guest users who are filtered out of User queries by default
-      @guest_user = User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id]) rescue nil
-      @guest_user = nil if @guest_user.respond_to? :guest and !@guest_user.guest
-    end
-    @guest_user ||= begin
-                      u = create_guest_user(session[:guest_user_id])
-                      session[:guest_user_id] = u.send(User.authentication_keys.first)
-                      u
-                    end
-    @guest_user
-  end
-
-
   def api_or_pdf?
     request.format.to_s.match('json') ||
       params[:print] ||
@@ -89,6 +71,25 @@ class ApplicationController < ActionController::Base
     users << current_user if current_user && !users.include?(current_user)
     users
   end
+
+  # Override method from devise-guests v0.8.2 to prevent the application from
+  # attempting to create duplicate guest users; namely by adding the
+  # User.unscoped
+  def guest_user
+    return @guest_user if @guest_user
+    if session[:guest_user_id]
+      # Override - added #unscoped to include guest users who are filtered out of User queries by default
+      @guest_user = User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id]) rescue nil
+      @guest_user = nil if @guest_user.respond_to? :guest and !@guest_user.guest
+    end
+    @guest_user ||= begin
+      u = create_guest_user(session[:guest_user_id])
+      session[:guest_user_id] = u.send(User.authentication_keys.first)
+      u
+    end
+    @guest_user
+  end
+
 
   private
 
