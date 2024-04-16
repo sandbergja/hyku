@@ -54,7 +54,6 @@ module Bulkrax
   end
 end
 
-
 # Prepending this to `Bulkrax::HasMatchers` yielded an unbound method
 # Thus, I am prepending it to `Bulkrax::Entry` since that mixes in `Bulkrax::HasMatchers`
 Bulkrax::Entry.prepend(Bulkrax::HasMatchersDecorator)

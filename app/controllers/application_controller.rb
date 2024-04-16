@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -26,7 +27,7 @@ class ApplicationController < ActionController::Base
   before_action :set_account_specific_connections!
   before_action :elevate_single_tenant!, if: :singletenant?
   skip_after_action :discard_flash_if_xhr
-  
+
   rescue_from Apartment::TenantNotFound do
     raise ActionController::RoutingError, 'Not Found'
   end
@@ -39,8 +40,8 @@ class ApplicationController < ActionController::Base
 
   def api_or_pdf?
     request.format.to_s.match('json') ||
-      params[:print] ||
-      request.path.include?('api') ||
+    params[:print] ||
+    request.path.include?('api') ||
       request.path.include?('pdf')
   end
 
@@ -82,14 +83,18 @@ class ApplicationController < ActionController::Base
     return @guest_user if @guest_user
     if session[:guest_user_id]
       # Override - added #unscoped to include guest users who are filtered out of User queries by default
-      @guest_user = User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id]) rescue nil
-      @guest_user = nil if @guest_user.respond_to? :guest and !@guest_user.guest
+      @guest_user = begin
+                      User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id])
+                    rescue
+                      nil
+                    end
+      @guest_user = nil if @guest_user.respond_to?(:guest) && !@guest_user.guest
     end
     @guest_user ||= begin
-      u = create_guest_user(session[:guest_user_id])
-      session[:guest_user_id] = u.send(User.authentication_keys.first)
-      u
-    end
+                      u = create_guest_user(session[:guest_user_id])
+                      session[:guest_user_id] = u.send(User.authentication_keys.first)
+                      u
+                    end
     @guest_user
   end
 
@@ -164,3 +169,4 @@ class ApplicationController < ActionController::Base
     payload[:account_id] = current_account.cname if current_account
   end
 end
+# rubocop:enable Metrics/ClassLength
