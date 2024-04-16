@@ -36,17 +36,16 @@ RSpec.describe AccountSettings do
     end
 
     context 'when we have a field marked as superadmin only' do
-      before { account.superadmin_settings = %i[analytics_provider]
-        context 'and we are not a super admin' do
-          it 'does not include that field' do
-            expect(account.public_settings(is_superadmin: false).keys).not_to include(:analytics_provider)
-          end
+      before { account.superadmin_settings = %i[analytics_provider] }
+      context 'and we are not a super admin' do
+        it 'does not include that field' do
+          expect(account.public_settings(is_superadmin: false).keys).not_to include(:analytics_provider)
         end
+      end
 
-        context 'and we are a super admin' do
-          it 'includes that field' do
-            expect(account.public_settings(is_superadmin: true).keys).to include(:analytics_provider)
-          end
+      context 'and we are a super admin' do
+        it 'includes that field' do
+          expect(account.public_settings(is_superadmin: true).keys).to include(:analytics_provider)
         end
       end
     end
