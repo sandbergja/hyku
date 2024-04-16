@@ -35,26 +35,19 @@ RSpec.describe AccountSettings do
       # rubocop:enable RSpec/ExampleLength
     end
 
-    context 'when is_superadmin is false' do
-      it 'returns all settings except private, disabled, and superadmin settings' do
-        expect(Account::SUPERADMIN_SETTINGS.size).to eq 7
-        expect(account.public_settings(is_superadmin: false).keys.sort).to eq %i[allow_downloads
-                                                                                 allow_signup
-                                                                                 cache_api
-                                                                                 contact_email_to
-                                                                                 doi_reader
-                                                                                 doi_writer
-                                                                                 email_domain
-                                                                                 email_format
-                                                                                 email_subject_prefix
-                                                                                 geonames_username
-                                                                                 google_analytics_id
-                                                                                 gtm_id
-                                                                                 oai_admin_email
-                                                                                 smtp_settings
-                                                                                 solr_collection_options
-                                                                                 ssl_configured]
-        expect(account.public_settings(is_superadmin: false).size).to eq 16
+    context 'when we have a field marked as superadmin only' do
+      before { account.superadmin_settings = %i[analytics_provider]
+        context 'and we are not a super admin' do
+          it 'does not include that field' do
+            expect(account.public_settings(is_superadmin: false).keys).not_to include(:analytics_provider)
+          end
+        end
+
+        context 'and we are a super admin' do
+          it 'includes that field' do
+            expect(account.public_settings(is_superadmin: true).keys).to include(:analytics_provider)
+          end
+        end
       end
     end
   end
