@@ -9,12 +9,12 @@
 	  <%= markdown("#{render_thumbnail_tag(recent_document, {width: 90}, {suppress_link: true})} #{recent_document.title_or_label}") %>
 	<% end %>
       </h3>
-      <% if FlipFlop.home_page_recent_document_show_depositor? %>
+      <% if Flipflop.home_page_recent_document_show_depositor? %>
 	<p class="recent-field">
           <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.depositor_label') %>:</span> <%= link_to_profile recent_document.depositor(t('hyrax.homepage.recently_uploaded.document.depositor_missing')) %>
 	</p>
       <% end %>
-      <% if FlipFlop.home_page_recent_document_show_keyword? %>
+      <% if Flipflop.home_page_recent_document_show_keyword? %>
 	<p class="recent-field">
           <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.keyword_label') %>:</span> <%= link_to_facet_list(recent_document.keyword, 'keyword', t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
 	</p>

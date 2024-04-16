@@ -48,7 +48,7 @@ module ApplicationHelper
   end
 
   def markdown(text)
-    return text unless FlipFlop.treat_some_user_inputs_as_markdown?
+    return text unless Flipflop.treat_some_user_inputs_as_markdown?
 
     # Consider extracting these options to a Hyku::Application
     # configuration/class attribute.
