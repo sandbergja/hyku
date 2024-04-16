@@ -49,6 +49,14 @@ class FeaturedCollectionList
                                       presenter_args: ability)
   end
 
+  def manually_ordered?
+    !@collections.all? { |c| c.order == FeaturedCollection.feature_limit }
+  end
+
+  def sort_by_title!
+    @collections.sort_by! { |c| c.presenter.title.first.downcase }
+  end
+
   def collection_with_id(id)
     @collections.find { |c| c.collection_id == id }
   end
