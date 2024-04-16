@@ -45,12 +45,24 @@ class ApplicationController < ActionController::Base
     Rails.env.staging? # rubocop:disable Rails/UnknownEnv
   end
 
+  ##
+  # @!attribute http_basic_auth_username [r|w]
+  #   @return [String]
+  #   @see ApplicationController#authenticate_if_needed
+  class_attribute :http_basic_auth_username, "samvera"
+
+  ##
+  # @!attribute http_basic_auth_password [r|w]
+  #   @return [String]
+  #   @see ApplicationController#authenticate_if_needed
+  class_attribute :http_basic_auth_password, "hyku"
+
   def authenticate_if_needed
     # Disable this extra authentication in test mode
     return true if Rails.env.test?
     return unless (hidden? || staging?) && !api_or_pdf?
     authenticate_or_request_with_http_basic do |username, password|
-      username == "samvera" && password == "hyku"
+      username == http_basic_auth_username && password == http_basic_auth_password
     end
   end
 
