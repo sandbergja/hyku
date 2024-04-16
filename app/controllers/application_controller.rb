@@ -40,8 +40,8 @@ class ApplicationController < ActionController::Base
 
   def api_or_pdf?
     request.format.to_s.match('json') ||
-    params[:print] ||
-    request.path.include?('api') ||
+      params[:print] ||
+      request.path.include?('api') ||
       request.path.include?('pdf')
   end
 
