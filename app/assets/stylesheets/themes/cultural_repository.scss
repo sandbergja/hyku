@@ -240,14 +240,14 @@
 
   ////// Media Queries //////
 
-  @media (min-width: $screen-xs-min) and (max-width: $screen-md-max) {
+  @media (min-width: 480px) and (max-width: 1199px) {
     .mt-reverse-mb {
       margin-bottom: 40px;
       margin-top: 0;
     }
   }
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: 991px) {
     div.home_page_text.homepage-text-container {
       height: 0;
       margin-bottom: 30px;
