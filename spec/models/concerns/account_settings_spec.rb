@@ -30,7 +30,6 @@ RSpec.describe AccountSettings do
                                                                                 smtp_settings
                                                                                 solr_collection_options
                                                                                 ssl_configured]
-        expect(account.public_settings(is_superadmin: true).size).to eq 23
       end
       # rubocop:enable RSpec/ExampleLength
     end

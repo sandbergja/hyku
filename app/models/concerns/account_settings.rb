@@ -22,6 +22,7 @@ module AccountSettings
 
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
+    setting :analytics_provider, type: 'string'
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
@@ -115,7 +116,7 @@ module AccountSettings
     all_settings.reject do |key, value|
       value[:disabled] ||
         self.class.private_settings.include?(key.to_s) ||
-        (!is_superadmin && self.class.superadmin_settings.include?(key.to_sym))
+        (!is_superadmin && superadmin_settings.include?(key.to_sym))
     end
   end
 
