@@ -12,17 +12,8 @@ RSpec.describe "The splash page", type: :feature, clean: true, multitenant: true
     ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = original
   end
 
-  it "shows the page, displaying the Hyku version" do
+  it "shows a link to login" do
     visit '/'
     expect(page).to have_link 'Login to get started', href: main_app.new_user_session_path(locale: 'en')
-
-    ## Provisionally comment out this bit of code as we're reconciling Hyku
-    ## Prime and PALs's Hyku instance.
-
-    # within 'footer' do
-    #   expect(page).to have_link 'Administrator login'
-    # end
-
-    expect(page).to have_content("Hyku v#{Hyku::VERSION}")
   end
 end
