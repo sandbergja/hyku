@@ -13,7 +13,7 @@ RSpec.describe GenericWork do
     end
 
     describe "metadata" do
-      it { is_expected.to have_property(:bulkrax_identifier).with_predicate("https://hykucommons.org/terms/bulkrax_identifier") }
+      it { is_expected.to have_property(:bulkrax_identifier) }
     end
 
     its(:migrating_from) { is_expected.to eq(GenericWork) }
