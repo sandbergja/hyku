@@ -28,7 +28,7 @@ class User < ApplicationRecord
 
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
-  attr_accessible :email, :password, :password_confirmation if Blacklight::Utils.needs_attr_accessible?
+  attr_accessible :email, :password, :password_confirmation
 
   def self.from_omniauth(auth)
     u = find_by(provider: auth.provider, uid: auth.uid)
