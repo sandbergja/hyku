@@ -6,7 +6,7 @@ module Admin
       params.require(:account).permit(:name, :cname, :title,
                                       *@account.public_settings(
                                         # OVERRIDE passing is_superadmin
-                                        is_superadmin: current_user.is_superadmin
+                                        is_superadmin: current_user.superadmin?
                                       ).keys)
     end
   end
