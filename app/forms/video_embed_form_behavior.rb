@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# frozen_sting_literal: true
+# frozen_string_literal: true
 
 module VideoEmbedFormBehavior
   extend ActiveSupport::Concern
