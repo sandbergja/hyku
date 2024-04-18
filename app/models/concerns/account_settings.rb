@@ -48,7 +48,7 @@ module AccountSettings
     setting :shared_login, type: 'boolean', disabled: true
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
-    setting :ssl_configured, type: 'boolean', default: false, private: true
+    setting :ssl_configured, type: 'boolean', default: true, private: true
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 
