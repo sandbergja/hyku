@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 class WorkIndexJob < Hyrax::ApplicationJob
   def perform(work)
-    work.update_index
+    return unless work
+
+    Hyrax.index_adapter.save(resource: work)
   end
 end
