@@ -5,7 +5,7 @@ class DestroySplitPagesJob < ApplicationJob
 
   def perform(id)
     # TODO: Make work with Valkyrie
-    work = ActiveFedora::Base.where(id: id).first
+    work = ActiveFedora::Base.where(id:).first
     return unless work&.is_child
 
     work.members.each(&:destroy)

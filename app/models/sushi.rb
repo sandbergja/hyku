@@ -22,9 +22,9 @@ module Sushi
         match = date.match(/(^\d{4}-\d{2}$)|(^\d{4}-\d{2}-\d{2}$)/)
         raise Sushi::Error::InvalidDateArgumentError.new(data: "The given date of \"#{date}\" is invalid. Please provide a date in YYYY-MM format") unless match
 
-        # rubocop:disable Metrics/LineLength
+        # rubocop:disable Layout/LineLength
         info << Sushi::Info.new(data: date.to_s, message: "The day of the month is not taken into consideration when providing metrics. The date provided was amended to account for the full month.").as_json if match[2]
-        # rubocop:enable Metrics/LineLength
+        # rubocop:enable Layout/LineLength
       end
 
       true
@@ -193,16 +193,16 @@ module Sushi
 
       earliest_date = Hyrax::CounterMetric.order(date: :asc).first.date
       if @begin_date < earliest_date
-        # rubocop:disable Metrics/LineLength
+        # rubocop:disable Layout/LineLength
         raise Sushi::Error::UsageNoLongerAvailableForRequestedDatesError.new(data: "Unable to complete the request because the begin_date of #{params[:begin_date]} is for a month that has incomplete data.  That month's data starts on #{earliest_date.iso8601}.")
-        # rubocop:enable Metrics/LineLength
+        # rubocop:enable Layout/LineLength
       end
 
       latest_date = Hyrax::CounterMetric.order(date: :desc).first.date
       if @end_date > latest_date
-        # rubocop:disable Metrics/LineLength
+        # rubocop:disable Layout/LineLength
         raise Sushi::Error::UsageNotReadyForRequestedDatesError.new(data: "Unable to complete the request because the end_date of #{params[:end_date]} is for a month that has incomplete data.  That month's data ends on #{latest_date.iso8601}.")
-        # rubocop:enable Metrics/LineLength
+        # rubocop:enable Layout/LineLength
       end
     rescue ActionController::ParameterMissing, KeyError => e
       raise Sushi::Error::InsufficientInformationToProcessRequestError.new(data: e.message)
@@ -302,9 +302,9 @@ module Sushi
     def coerce_item_id(params = {})
       return true unless params.key?(:item_id)
 
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       raise Sushi::Error::InvalidReportFilterValueError.new(data: "The given parameter `item_id=#{params[:item_id]}` does not exist. Please provide an existing item_id, or none at all.") unless Hyrax::CounterMetric.exists?(work_id: params[:item_id])
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
 
       @item_id = params[:item_id]
       @item_id_in_params = true
@@ -419,9 +419,9 @@ module Sushi
       # See https://github.com/scientist-softserv/palni-palci/issues/721#issuecomment-1734215004 for details of this little nuance
       raise Sushi::Error::InvalidReportFilterValueError.new(data: "You may not query for multiple authors (as specified by the `#{DELIMITER}' delimiter.)") if @author.include?(DELIMITER)
 
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       raise Sushi::Error::InvalidReportFilterValueError.new(data: "The given author #{author.inspect} was not found in the metrics.") unless Hyrax::CounterMetric.where(author_as_where_parameters).exists?
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
 
       @author_in_params = true
     end
@@ -489,9 +489,9 @@ module Sushi
       @yop = params[:yop]
       @yop_as_where_parameters = ["(#{where_clauses.join(' OR ')})"] + where_values
     rescue ArgumentError
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       raise Sushi::Error::InvalidDateArgumentError.new(data: "The given parameter `yop=#{yop}` was malformed.  You can provide a range (e.g. 'YYYY-YYYY') or a single date (e.g. 'YYYY').  You can separate ranges/values with a '|'.")
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
     end
   end
 end

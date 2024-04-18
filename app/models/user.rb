@@ -28,6 +28,9 @@ class User < ApplicationRecord
 
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/PerceivedComplexity
   def self.from_omniauth(auth)
     u = find_by(provider: auth.provider, uid: auth.uid)
     return u if u
@@ -39,7 +42,7 @@ class User < ApplicationRecord
     u.email = auth&.info&.email
     u.email ||= auth.uid
     # rubocop:disable Performance/RedundantMatch
-    u.email = [auth.uid, '@', Site.instance.account.email_domain].join unless u.email.match('@')
+    u.email = [auth.uid, '@', Site.instance.account.email_domain].join unless u.email.match?('@')
     # rubocop:enable Performance/RedundantMatch
 
     # Passwords are required for all records, but in the case of OmniAuth,
@@ -53,6 +56,9 @@ class User < ApplicationRecord
     u.save
     u
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/PerceivedComplexity
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.

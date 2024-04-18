@@ -244,7 +244,7 @@ RSpec.describe Sushi do
       its(:yop_as_where_parameters) { is_expected.to be_falsey }
     end
 
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     [
       ['2003', ["((year_of_publication = ?))", 2003]],
       ['2003-2005', ["((year_of_publication >= ? AND year_of_publication <= ?))", 2003, 2005]],
@@ -272,6 +272,6 @@ RSpec.describe Sushi do
         end
       end
     end
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   end
 end
