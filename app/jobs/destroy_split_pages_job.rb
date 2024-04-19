@@ -4,11 +4,17 @@ class DestroySplitPagesJob < ApplicationJob
   queue_as :default
 
   def perform(id)
-    # TODO: Make work with Valkyrie
-    work = ActiveFedora::Base.where(id:).first
-    return unless work&.is_child
+    work = nil
+    begin
+      work = Hyrax.query_service.find_by(id: id)
+    rescue Valkyrie::Persistence::ObjectNotFoundError
+      return
+    end
 
-    work.members.each(&:destroy)
-    work.destroy
+    return unless work.is_child
+
+    # Does this work?
+    transaction = Hyrax::Transactions::WorkDestroy.new
+    transaction.call(work)
   end
 end
