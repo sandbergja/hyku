@@ -6,7 +6,7 @@ class DestroySplitPagesJob < ApplicationJob
   def perform(id)
     work = nil
     begin
-      work = Hyrax.query_service.find_by(id: id)
+      work = Hyrax.query_service.find_by(id:)
     rescue Valkyrie::Persistence::ObjectNotFoundError
       return
     end

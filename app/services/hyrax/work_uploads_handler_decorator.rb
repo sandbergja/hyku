@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # OVERRIDE add the is_derived field to the file set
 module Hyrax
   module WorkUploadsHandlerDecorator

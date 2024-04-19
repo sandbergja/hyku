@@ -4,7 +4,6 @@ require 'spec_helper'
 
 RSpec.describe DestroySplitPagesJob do
   describe '#perform' do
-
     let(:work) do
       FactoryBot.valkyrie_create(:generic_work_resource, is_child: true)
     end
