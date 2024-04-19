@@ -2,6 +2,7 @@
 
 Hyrax::FileSet.class_eval do
   include Hyrax::Schema(:bulkrax_metadata)
+  include Hyrax::Schema(:hyku_file_set_metadata)
   include Hyrax::ArResource
 end
 
