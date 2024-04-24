@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # OVERRRIDE HYRAX v5.0.1 to turn loc into a string for the location lookup,
-# otherwise it'll error. 
+# otherwise it'll error.
 module Hyrax
   ##
   # Indexes properties common to Hyrax::Resource types
@@ -13,6 +13,5 @@ module Hyrax
     end
   end
 end
-
 
 Hyrax::LocationIndexer.prepend(Hyrax::LocationIndexerDecorator)
