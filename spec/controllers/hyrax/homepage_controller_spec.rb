@@ -54,7 +54,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
       it "sets recent documents in the right order" do
         get :index
         expect(response).to be_successful
-        # expect(assigns(:recent_documents).length).to eq 3
+        expect(assigns(:recent_documents).length).to eq 3
         create_times = assigns(:recent_documents).map { |d| d['date_uploaded_dtsi'] }
         expect(create_times).to eq create_times.sort.reverse
       end
