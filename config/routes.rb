@@ -9,6 +9,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
+  mount WillowSword::Engine => '/sword'
 
   mount Hyrax::IiifAv::Engine, at: '/'
   mount IiifPrint::Engine, at: '/'
