@@ -2,6 +2,7 @@
 
 class PruneStaleGuestUsersJob < ApplicationJob
   non_tenant_job
+  # TODO: disable this job for deploy
   # repeat 'every week at 8am' # midnight PST
 
   def perform
