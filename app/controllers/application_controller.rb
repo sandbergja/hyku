@@ -50,13 +50,13 @@ class ApplicationController < ActionController::Base
   # @!attribute http_basic_auth_username [r|w]
   #   @return [String]
   #   @see ApplicationController#authenticate_if_needed
-  class_attribute :http_basic_auth_username
+  class_attribute :http_basic_auth_username, default: 'samvera'
 
   ##
   # @!attribute http_basic_auth_password [r|w]
   #   @return [String]
   #   @see ApplicationController#authenticate_if_needed
-  class_attribute :http_basic_auth_password
+  class_attribute :http_basic_auth_password, default: 'hyku'
 
   def authenticate_if_needed
     # Disable this extra authentication in test mode
