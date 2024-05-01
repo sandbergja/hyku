@@ -16,6 +16,7 @@ class User < ApplicationRecord
   devise(*Hyku::Application.user_devise_parameters)
 
   after_create :add_default_group_membership!
+  after_update :mark_all_undelivered_messages_as_delivered!, if: -> { batch_email_frequency == 'off' }
 
   # set default scope to exclude guest users
   def self.default_scope
@@ -162,5 +163,14 @@ class User < ApplicationRecord
     return if Account.global_tenant?
 
     Hyrax::Group.find_or_create_by!(name: Ability.registered_group_name).add_members_by_id(id)
+  end
+
+  # When the user sets their batch email frequency to 'off' then we want to mark all the messages
+  # (really the receipts of the messages) to is_delivered tru
+  def mark_all_undelivered_messages_as_delivered!
+    mailbox.receipts.where(is_delivered: false).find_each do |receipt|
+      receipt.is_delivered = true
+      receipt.save
+    end
   end
 end
