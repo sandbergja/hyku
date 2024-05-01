@@ -163,4 +163,10 @@ class User < ApplicationRecord
 
     Hyrax::Group.find_or_create_by!(name: Ability.registered_group_name).add_members_by_id(id)
   end
+
+  # Mailboxer (the notification system) needs the User object to respond to this method
+  # in order to send emails
+  def mailboxer_email(_object)
+    email
+  end
 end
