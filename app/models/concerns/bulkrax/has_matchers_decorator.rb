@@ -42,7 +42,9 @@ module Bulkrax
       response = Net::HTTP.get_response(uri)
       data = JSON.parse(response.body)
 
-      raise 'Invalid user. Check that geonames_username is set in the Site instance Account settings' if data['status']['message'] == 'invalid user'
+      return if data.blank?
+
+      raise 'Invalid user. Check that geonames_username is set in the Site instance Account settings' if data.fetch('status', {})['message'] == 'invalid user'
 
       geoname = data['geonames'].first
 
