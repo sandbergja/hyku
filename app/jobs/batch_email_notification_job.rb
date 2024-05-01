@@ -8,8 +8,8 @@ class BatchEmailNotificationJob < ApplicationJob
 
   def perform(account)
     Apartment::Tenant.switch(account.tenant) do
-      # Query for all users that have email_frequency not set to "off"
-      users = User.where.not(batch_email_frequency: "off")
+      # Query for all users that have email_frequency turned off
+      users = User.where.not(batch_email_frequency: "never")
       users.each do |user|
         # Find all undelivered messages within the frequency range of a user and any emails that haven't been sent
         undelivered_messages =

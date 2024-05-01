@@ -914,7 +914,7 @@ ActiveRecord::Schema.define(version: 2024_04_29_213539) do
     t.string "preferred_locale"
     t.string "provider"
     t.string "uid"
-    t.string "batch_email_frequency", default: "off"
+    t.string "batch_email_frequency", default: "never"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
