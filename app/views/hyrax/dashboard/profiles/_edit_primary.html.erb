@@ -57,11 +57,9 @@
 
   <!-- OVERRIDE: Add batch email frequency to edit -->
   <div class="form-group row">
-    <%= f.label :batch_email_frequency, t("hyrax.user_profile.email_frequency.label"), class: 'col-4 col-form-label' %>
+    <%= f.label :batch_email_frequency, t("hyrax.user_profile.email_frequency.label").html_safe, class: 'col-4 col-form-label' %>
     <div class="col-8">
-      <%= f.select :batch_email_frequency,
-          controller.frequency_options,
-          class: "form-control" %>
+      <%= f.select :batch_email_frequency, controller.frequency_options, {}, { class: "form-control" } %>
     </div>
   </div><!-- .form-group -->
 

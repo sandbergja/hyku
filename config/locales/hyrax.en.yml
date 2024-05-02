@@ -1041,7 +1041,7 @@ en:
       processing: File is being processed; you may edit when processing has completed
     user_profile:
       email_frequency:
-        label: Batch Email Frequency
+        label: <i class="fa fa-calendar"></i> Batch Email Frequency
         daily: Daily
         monthly: Monthly
         never: Never
