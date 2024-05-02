@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_29_213539) do
+ActiveRecord::Schema.define(version: 2024_05_02_230546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -915,6 +915,7 @@ ActiveRecord::Schema.define(version: 2024_04_29_213539) do
     t.string "provider"
     t.string "uid"
     t.string "batch_email_frequency", default: "never"
+    t.datetime "last_emailed_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -11,6 +11,7 @@ class BatchEmailNotificationJob < ApplicationJob
       # Query for all users that have email_frequency turned off
       users = User.where.not(batch_email_frequency: "never")
       users.each do |user|
+        next unless send_email_today?(user)
         # Find all undelivered messages within the frequency range of a user and any emails that haven't been sent
         undelivered_messages =
           Mailboxer::Message.joins(:receipts)
@@ -21,7 +22,7 @@ class BatchEmailNotificationJob < ApplicationJob
                             .to_a
 
         next if undelivered_messages.blank?
-        send_email(user, undelivered_messages)
+        send_email(user, undelivered_messages, account)
 
         # Mark the as read
         undelivered_messages.each do |message|
@@ -29,6 +30,8 @@ class BatchEmailNotificationJob < ApplicationJob
             receipt.update(is_delivered: true)
           end
         end
+
+        user.update(last_emailed_at: Time.current)
       end
     end
   end
@@ -37,6 +40,21 @@ class BatchEmailNotificationJob < ApplicationJob
 
   def reenqueue(account)
     BatchEmailNotificationJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
+  end
+
+  def send_email_today?(user)
+    return true if user.last_emailed_at.nil?
+
+    next_email_date = case user.batch_email_frequency
+                      when "daily"
+                        user.last_emailed_at + 1.day
+                      when "weekly"
+                        user.last_emailed_at + 1.week
+                      when "monthly"
+                        user.last_emailed_at + 1.month
+                      end
+
+    Time.current >= next_email_date
   end
 
   def frequency_date(frequency)
@@ -50,8 +68,7 @@ class BatchEmailNotificationJob < ApplicationJob
     end
   end
 
-  def send_email(user, undelivered_messages)
-    mailer = HykuMailer.new
-    mailer.summary_email(user, undelivered_messages)
+  def send_email(user, undelivered_messages, account)
+    HykuMailer.summary_email(user, undelivered_messages, account).deliver_now
   end
 end

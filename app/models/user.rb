@@ -169,8 +169,7 @@ class User < ApplicationRecord
   # (really the receipts of the messages) to is_delivered tru
   def mark_all_undelivered_messages_as_delivered!
     mailbox.receipts.where(is_delivered: false).find_each do |receipt|
-      receipt.is_delivered = true
-      receipt.save
+      receipt.update(is_delivered: true)
     end
   end
 end

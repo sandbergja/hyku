@@ -6,14 +6,15 @@ class HykuMailer < ActionMailer::Base
     { host: host_for_tenant }
   end
 
-  def summary_email(user, messages)
+  def summary_email(user, messages, account)
     @user = user
     @messages = messages || []
-    @url = notifications_url
+    @account = account
+    @url = notifications_url_for(@account)
 
     mail(to: @user.email,
          subject: "You have #{messages.count} new message(s)",
-         from: current_tenant.contact_email,
+         from: @account.contact_email,
          template_path: 'hyku_mailer',
          template_name: 'summary_email')
   end
@@ -21,14 +22,10 @@ class HykuMailer < ActionMailer::Base
   private
 
   def host_for_tenant
-    current_tenant&.cname || Account.admin_host
+    Account.find_by(tenant: Apartment::Tenant.current)&.cname || Account.admin_host
   end
 
-  def current_tenant
-    Account.find_by(tenant: Apartment::Tenant.current)
-  end
-
-  def notifications_url
-    "https://#{current_tenant.cname}/notifications"
+  def notifications_url_for(account)
+    "https://#{account.cname}/notifications"
   end
 end
