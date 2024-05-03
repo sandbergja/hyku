@@ -14,6 +14,8 @@ class HykuMailerPreview < ActionMailer::Preview
 
     user = Struct.new(:email, :name).new('admin@example.com', 'Admin')
 
-    HykuMailer.new.summary_email(user, messages)
+    account = Struct.new(:cname, :contact_email).new('local', 'user@example.com')
+
+    HykuMailer.new.summary_email(user, messages, account)
   end
 end
