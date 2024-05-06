@@ -11,9 +11,10 @@ class HykuMailer < ActionMailer::Base
     @messages = messages || []
     @account = account
     @url = notifications_url_for(@account)
+    @application_name = account.sites.application_name
 
     mail(to: @user.email,
-         subject: "You have #{messages.count} new message(s)",
+         subject: "You have #{@messages.count} new message(s) on #{@application_name}",
          from: @account.contact_email,
          template_path: 'hyku_mailer',
          template_name: 'summary_email')
