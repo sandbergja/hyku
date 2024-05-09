@@ -125,6 +125,8 @@ extraEnvVars: &envVars
     value: "false"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
+  - name: HYRAX_VALKYRIE
+    value: "true"
   - name: HYKU_ADMIN_HOST
     value: hyku-staging.$BASE_URL
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
@@ -139,6 +141,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_ROOT_HOST
     value: hyku-staging.$BASE_URL
+  - name: HYKU_SHOW_BACKTRACE
+    value: "true"
   - name: HYKU_USER_DEFAULT_PASSWORD
     value: password
   - name: NEGATIVE_CAPTCHA_SECRET
