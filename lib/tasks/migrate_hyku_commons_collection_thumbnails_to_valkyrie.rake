@@ -7,7 +7,7 @@ namespace :hyku do
       Collection.find_each do |collection|
         # get collection solr document's thumbnail_path for each collection
         doc = collection.to_solr
-        original_thumbnail_path = File.join(Rails.public_path, doc['thumbnail_path_ss'])
+        original_thumbnail_path = File.join('public/branding/', doc['thumbnail_path_ss'])
 
         next unless File.exist?(original_thumbnail_path)
 
