@@ -10,7 +10,7 @@ module Hyrax
       if object.try(:collection?) && UploadedCollectionThumbnailPathService.uploaded_thumbnail?(object)
         UploadedCollectionThumbnailPathService.call(object)
       else
-        CollectionResourceIndexer.thumbnail_path_service.call(object).gsub('/app/samvera', '')
+        CollectionResourceIndexer.thumbnail_path_service.call(object)&.gsub('/app/samvera', '')
       end
     end
   end
