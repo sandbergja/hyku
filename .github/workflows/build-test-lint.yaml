@@ -47,5 +47,5 @@ jobs:
 
   reports:
     if: always()
-    needs: [tests, lint]
+    needs: [test, lint]
     uses: scientist-softserv/actions/.github/workflows/report.yaml@v0.0.22
