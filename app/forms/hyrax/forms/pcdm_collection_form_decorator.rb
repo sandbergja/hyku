@@ -12,7 +12,7 @@ Hyrax::Forms::PcdmCollectionForm.class_eval do
       if thumbnail_info
         thumbnail_file = File.split(thumbnail_info.local_path).last
         alttext = thumbnail_info.alt_text
-        file_location = thumbnail_info.local_path.gsub('/app/samvera', '')
+        file_location = thumbnail_info.local_path.gsub(/.*?(\/branding)/, '\1')
         relative_path = "/" + thumbnail_info.local_path.split("/")[-4..-1].join("/")
         { file: thumbnail_file, full_path: file_location, relative_path:, alttext: }
       else
