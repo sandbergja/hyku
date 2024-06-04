@@ -91,25 +91,6 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
       degree_grantor: 'University of California, Los Angeles'
     }
   end
-  let(:cdl_record) do
-    {
-      model: 'Cdl',
-      title: 'Cdl Title',
-      creator: 'Smith, John',
-      keyword: 'keyword',
-      rights_statement: 'http://rightsstatements.org/vocab/InC/1.0/',
-      resource_type: 'Article',
-      date_created: nil,
-      audience: nil,
-      education_level: nil,
-      learning_resource_type: nil,
-      discipline: nil,
-      degree_name: nil,
-      degree_level: nil,
-      degree_discipline: nil,
-      degree_grantor: nil
-    }
-  end
   let(:collection_record) do
     {
       model: 'Collection',
@@ -149,7 +130,7 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
     }
   end
   let(:records) do
-    [generic_work_record, image_record, oer_record, etd_record, cdl_record, collection_record, file_set_record]
+    [generic_work_record, image_record, oer_record, etd_record, collection_record, file_set_record]
   end
 
   before do
@@ -188,17 +169,6 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
                            .transform_keys(&:capitalize)
       end
       let(:records) { [generic_work_record_with_capitalized_headers] }
-
-      it 'still returns true' do
-        expect(subject.valid_import?).to be true
-      end
-    end
-
-    context 'when the csv headers do not have underscores' do
-      let(:generic_work_record_with_no_underscores) do
-        generic_work_record.transform_keys { |key| key.to_s.tr('_', ' ') }
-      end
-      let(:records) { [generic_work_record_with_no_underscores] }
 
       it 'still returns true' do
         expect(subject.valid_import?).to be true

@@ -124,7 +124,7 @@ RSpec.describe Hyrax::OerPresenter do
   end
 
   describe "#work_presenters" do
-    let(:obj) { valkyrie_create(:cdl_resource, :with_file_and_work, depositor: 'somebody') }
+    let(:obj) { valkyrie_create(:oer_resource, :with_file_and_work, depositor: 'somebody') }
     let(:attributes) { obj.to_solr }
 
     it "filters out members that are file sets" do
@@ -133,7 +133,7 @@ RSpec.describe Hyrax::OerPresenter do
   end
 
   describe "#manifest" do
-    let(:work) { valkyrie_create(:cdl_resource, :with_one_file_set, depositor: 'somebody') }
+    let(:work) { valkyrie_create(:oer_resource, :with_one_file_set, depositor: 'somebody') }
     let(:solr_document) { SolrDocument.new(work.to_solr) }
 
     describe "#sequence_rendering" do
