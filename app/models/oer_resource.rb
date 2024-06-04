@@ -36,4 +36,8 @@ class OerResource < Hyrax::Work
   def related_item
     @related_item ||= Hyrax.query_service.find_by(id: related_item_id) if related_item_id.present?
   end
+
+  def human_readable_type
+    super.upcase
+  end
 end

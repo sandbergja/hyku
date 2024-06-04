@@ -20,4 +20,8 @@ class EtdResource < Hyrax::Work
   )
 
   prepend OrderAlready.for(:creator)
+
+  def human_readable_type
+    super.upcase
+  end
 end
