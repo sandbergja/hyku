@@ -33,52 +33,52 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
   end
 
   def previous_version_json
-    return if previous_version.blank?
+    return [] if previous_version.blank?
 
     previous_version.map do |child|
       {
         id: child.id,
-        label: child.to_s,
-        path: @controller.url_for(child),
+        label: child.title.join(' | '),
+        path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "previous-version"
       }
     end.to_json
   end
 
   def newer_version_json
-    return if newer_version.blank?
+    return [] if newer_version.blank?
 
     newer_version.map do |child|
       {
         id: child.id,
-        label: child.to_s,
-        path: @controller.url_for(child),
+        label: child.title.join(' | '),
+        path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "newer-version"
       }
     end.to_json
   end
 
   def alternate_version_json
-    return if alternate_version.blank?
+    return [] if alternate_version.blank?
 
     alternate_version.map do |child|
       {
         id: child.id,
-        label: child.to_s,
-        path: @controller.url_for(child),
+        label: child.title.join(' | '),
+        path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "alternate-version"
       }
     end.to_json
   end
 
   def related_item_json
-    return if related_item.blank?
+    return [] if related_item.blank?
 
     related_item.map do |child|
       {
         id: child.id,
-        label: child.to_s,
-        path: @controller.url_for(child),
+        label: child.title.join(' | '),
+        path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "related-item"
       }
     end.to_json
