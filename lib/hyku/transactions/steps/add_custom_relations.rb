@@ -8,7 +8,7 @@ module Hyku
 
         def call(change_set)
           if change_set.model.is_a?(OerResource)
-            attributes_collection = change_set.input_params['related_members_attributes']&.permit!&.to_h
+            attributes_collection = change_set.input_params.delete(:related_members_attributes)&.permit!&.to_h
             add_custom_relations(change_set, attributes_collection)
           end
 
@@ -61,13 +61,13 @@ module Hyku
           rel = "#{relationship.underscore}_id"
           case rel
           when "previous_version_id"
-            change_set.model.previous_version_id = (change_set.model.previous_version_id.to_a << id)
+            change_set.model.previous_version_id = (change_set.model.previous_version_id.to_a << Valkyrie::ID.new(id))
           when "newer_version_id"
-            change_set.model.newer_version_id = (change_set.model.newer_version_id.to_a << id)
+            change_set.model.newer_version_id = (change_set.model.newer_version_id.to_a << Valkyrie::ID.new(id))
           when "alternate_version_id"
-            change_set.model.alternate_version_id = (change_set.model.alternate_version_id.to_a << id)
+            change_set.model.alternate_version_id = (change_set.model.alternate_version_id.to_a << Valkyrie::ID.new(id))
           when "related_item_id"
-            change_set.model.related_item_id = (change_set.model.related_item_id.to_a << id)
+            change_set.model.related_item_id = (change_set.model.related_item_id.to_a << Valkyrie::ID.new(id))
           end
           change_set.model.save
           change_set

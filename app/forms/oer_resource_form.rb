@@ -37,7 +37,7 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
 
     previous_version.map do |child|
       {
-        id: child.id,
+        id: child.id.to_s,
         label: child.title.join(' | '),
         path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "previous-version"
@@ -50,7 +50,7 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
 
     newer_version.map do |child|
       {
-        id: child.id,
+        id: child.id.to_s,
         label: child.title.join(' | '),
         path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "newer-version"
@@ -63,7 +63,7 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
 
     alternate_version.map do |child|
       {
-        id: child.id,
+        id: child.id.to_s,
         label: child.title.join(' | '),
         path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "alternate-version"
@@ -76,7 +76,7 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
 
     related_item.map do |child|
       {
-        id: child.id,
+        id: child.id.to_s,
         label: child.title.join(' | '),
         path: Rails.application.routes.url_helpers.url_for(child),
         relationship: "related-item"
