@@ -530,6 +530,12 @@ body.public-facing {
   width: 1.5em;
 }
 
+// remove a button that appears on the facets menu in the catalog search results
+// clicking this button seemingly does nothing
+.catalog-index .facets-header > button {
+  display: none;
+}
+
 // make sure constraints are on only one line, even with markdown
 span.constraint-value p, .facet-values p {
   display: inline-block;
