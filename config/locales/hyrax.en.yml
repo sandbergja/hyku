@@ -949,7 +949,7 @@ en:
     passive_consent_to_agreement: By saving this work I agree to the
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Go
+        html: <span class="fa fa-search"></span> Go
         text: Search
       form:
         option:
