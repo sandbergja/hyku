@@ -2,9 +2,9 @@
 
 # OVERRIDE Hyrax v5.0.0rc2
 # - Fix file upload in logo and banner
-# - Use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
-
-# OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail
+# - ensure user is allowed to change visibility
+# - add the ability to upload a collection thumbnail
+# - add altext to collection banner
 
 module Hyrax
   module Dashboard
@@ -19,13 +19,6 @@ module Hyrax
         super
       end
 
-      # OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail - START
-      def process_branding
-        process_banner_input
-        process_logo_input
-        process_thumbnail_input
-      end
-
       # rubocop:disable Metrics/AbcSize
       def update_valkyrie_collection
         return after_update_errors(form_err_msg(form)) unless form.validate(collection_params)
@@ -33,7 +26,7 @@ module Hyrax
         result = transactions['change_set.update_collection']
                  .with_step_args(
                           'collection_resource.save_collection_banner' => { update_banner_file_ids: params["banner_files"],
-                                                                            banner_unchanged_indicator: params["banner_unchanged"] },
+                                                                            alttext: params["banner_text"]&.first },
                           'collection_resource.save_collection_logo' => { update_logo_file_ids: params["logo_files"],
                                                                           alttext_values: params["alttext"],
                                                                           linkurl_values: params["linkurl"] },
@@ -48,7 +41,6 @@ module Hyrax
         after_update_response
       end
       # rubocop:enable Metrics/AbcSize
-      # OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail - END
 
       def edit
         form
@@ -70,6 +62,14 @@ module Hyrax
         authorize! :manage_discovery, @collection if collection_params[:visibility].present? && @collection.visibility != collection_params[:visibility]
 
         super
+      end
+
+      # OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail
+      # Not used with Valkyrie
+      def process_branding
+        process_banner_input
+        process_logo_input
+        process_thumbnail_input
       end
 
       # Deletes any previous thumbnails. The thumbnail indexer (see services/hyrax/indexes_thumbnails)
@@ -124,7 +124,7 @@ module Hyrax
         blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
       end
 
-      # branding specific methods
+      ## Branding Methods not used with Valkyrie
       def process_banner_input
         return update_existing_banner if params["banner_unchanged"] == "true"
         remove_banner
