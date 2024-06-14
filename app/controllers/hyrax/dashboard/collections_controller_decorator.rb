@@ -5,6 +5,7 @@
 # - ensure user is allowed to change visibility
 # - add the ability to upload a collection thumbnail
 # - add altext to collection banner
+# @TODO clean up of unnecessary methods now that we are using Valkyrie transactions to set branding
 
 module Hyrax
   module Dashboard
@@ -45,7 +46,7 @@ module Hyrax
       def edit
         form
         # Gets original filename of an uploaded thumbnail. See #update
-        return unless ::SolrDocument.find(@collection.id).thumbnail_path.include?("uploaded_collection_thumbnails") && uploaded_thumbnail?
+        return unless ::SolrDocument.find(@collection.id).thumbnail_path&.include?("uploaded_collection_thumbnails") && uploaded_thumbnail?
         @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)
       end
 
