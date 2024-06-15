@@ -10,23 +10,23 @@ module Hyrax
 
         def call(collection_resource, update_banner_file_ids: nil, alttext: nil)
           collection_id = collection_resource.id.to_s
-          process_banner_input(collection_id: collection_id, update_banner_file_ids: update_banner_file_ids, alttext: alttext)
+          process_banner_input(collection_id:, update_banner_file_ids:, alttext:)
           Success(collection_resource)
         end
 
         def process_banner_input(collection_id:, update_banner_file_ids:, alttext:)
           if !update_banner_file_ids && !alttext
-            remove_banner(collection_id: collection_id)
+            remove_banner(collection_id:)
           elsif update_banner_file_ids
-            remove_banner(collection_id: collection_id)
-            add_new_banner(collection_id: collection_id, uploaded_file_ids: update_banner_file_ids, alttext: alttext)
+            remove_banner(collection_id:)
+            add_new_banner(collection_id:, uploaded_file_ids: update_banner_file_ids, alttext:)
           elsif alttext
             CollectionBrandingInfo
-              .where(collection_id: collection_id, role: "banner")
-              .first.update_column(:alt_text, alttext)
+              .where(collection_id:, role: "banner")
+              .first.update_column(:alt_text, alttext) # rubocop:disable Rails/SkipsModelValidations
           end
         end
-        
+
         def add_new_banner(collection_id:, uploaded_file_ids:, alttext:)
           f = uploaded_files(uploaded_file_ids).first
           file_location = process_file_location(f)
