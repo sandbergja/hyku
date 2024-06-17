@@ -147,7 +147,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 151fb0d38339e12eabdf99ce9d0b1a0f07685fd5
+  revision: 74f29943d88749a57077818d271b29729a6d7183
   branch: double_combo
   specs:
     hyrax (5.0.1)
@@ -220,10 +220,10 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 122e86634f17c8f40d9ae4d59d2d7deca00f1694
+  revision: 6751159344321bcd63b504b2e8a4fe22a9b2343a
   branch: main
   specs:
-    iiif_print (1.0.0)
+    iiif_print (2.0.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -695,7 +695,8 @@ GEM
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http_logger (0.7.0)
-    httparty (0.21.0)
+    httparty (0.22.0)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
@@ -1567,4 +1568,4 @@ DEPENDENCIES
   willow_sword!
 
 BUNDLED WITH
-   2.5.10
+   2.4.21

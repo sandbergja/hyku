@@ -46,6 +46,11 @@ RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.t
     && rm -rf ImageMagick* \
     && rm -rf /var/cache/apk/*
 
+# Install "best" training data for Tesseract
+RUN echo "📚 Installing Tesseract Best (training data)!" && \
+    cd /usr/share/tessdata/ && \
+    wget https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true -O eng_best.traineddata
+
 ARG VIPS_VERSION=8.11.3
 
 RUN set -x -o pipefail \
@@ -82,11 +87,6 @@ RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediain
   ln -sf /usr/lib/libzen.so.0 /app/fits/tools/mediainfo/linux/libzen.so.0
 
 COPY --chown=1001:101 ./bin/db-migrate-seed.sh /app/samvera/
-
-# Ensure the directory exists and create the symbolic link
-RUN mkdir -p /app/samvera/hyrax-webapp/public && \
-    mkdir -p /app/samvera/branding && \
-    ln -snf /app/samvera/branding /app/samvera/hyrax-webapp/public/branding
 
 ONBUILD ARG APP_PATH=.
 ONBUILD COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
