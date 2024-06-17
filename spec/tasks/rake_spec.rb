@@ -52,7 +52,6 @@ RSpec.describe "Rake tasks" do
   end
 
   describe 'tenantize:task' do
-    let(:accounts) { [Account.new(name: 'first'), Account.new(name: 'second')] }
     let(:task) { double('task') }
 
     before do
@@ -60,22 +59,26 @@ RSpec.describe "Rake tasks" do
       allow(Account).to receive(:tenants).and_return(accounts)
     end
 
-    it 'requires at least one argument' do
-      expect { run_task('tenantize:task') }.to raise_error(ArgumentError, /rake task name is required/)
-    end
+    context 'when run against all tenants' do
+      let(:accounts) { [Account.new(name: 'first'), Account.new(name: 'second')] }
 
-    it 'requires first argument to be a valid rake task' do
-      expect { run_task('tenantize:task', 'foobar') }.to raise_error(ArgumentError, /Rake task not found\: foobar/)
-    end
-
-    it 'runs against all tenants' do
-      accounts.each do |account|
-        expect(account).to receive(:switch).once.and_call_original
+      it 'requires at least one argument' do
+        expect { run_task('tenantize:task') }.to raise_error(ArgumentError, /rake task name is required/)
       end
-      allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
-      expect(task).to receive(:invoke).exactly(accounts.count).times
-      expect(task).to receive(:reenable).exactly(accounts.count).times
-      run_task('tenantize:task', 'hyrax:count')
+
+      it 'requires first argument to be a valid rake task' do
+        expect { run_task('tenantize:task', 'foobar') }.to raise_error(ArgumentError, /Rake task not found\: foobar/)
+      end
+
+      it 'runs against all tenants' do
+        accounts.each do |account|
+          expect(account).to receive(:switch).once.and_call_original
+        end
+        allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)
+        expect(task).to receive(:invoke).exactly(accounts.count).times
+        expect(task).to receive(:reenable).exactly(accounts.count).times
+        run_task('tenantize:task', 'hyrax:count')
+      end
     end
 
     context 'when run against specified tenants' do
