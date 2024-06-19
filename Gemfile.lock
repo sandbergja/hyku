@@ -125,10 +125,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: d8f9b85a9064b352a252c5deb590a430ca4a738e
+  revision: 078fa6e62e6d20573152d02330f9cb824458fbb9
   branch: main
   specs:
-    bulkrax (8.0.0)
+    bulkrax (8.1.0)
       bagit (~> 0.4.6)
       coderay
       denormalize_fields
@@ -220,7 +220,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: ffea40d927ee8f26b403ac4bfec732b871c2370a
+  revision: fdbd6557ad7893997b579ce54d76ab1c3034ea5c
   branch: main
   specs:
     iiif_print (2.0.1)
