@@ -7,6 +7,11 @@ attributes:
       - "show_pdf_viewer_bsi"
     # For historic reasons, this is the predicate
     predicate: http://id.loc.gov/vocabulary/identifiers/show_pdf_viewer
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
   show_pdf_download_button:
     # https://dry-rb.org/gems/dry-types/1.7/built-in-types/
     type: bool
@@ -15,3 +20,8 @@ attributes:
       - "show_pdf_download_button_bsi"
     # For historic reasons, this is the predicate
     predicate: http://id.loc.gov/vocabulary/identifiers/show_pdf_download_button
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
