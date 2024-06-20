@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# OVERRIDE BULKRAX 5.3.0 to include oer specific methods and model level required fields checking
+# OVERRIDE BULKRAX 8.1.0 to include oer specific methods and model level required fields checking
 module Bulkrax
   module CsvParserDecorator
     include OerCsvParser
 
     def valid_import?
       missing_fields_by_model = records.each_with_object({}) do |record, hash|
+        record.compact!
         record.transform_keys!(&:downcase).transform_keys!(&:to_sym)
         missing_fields = missing_fields_for(record)
         hash[record[:model]] = missing_fields if missing_fields.present?
@@ -16,7 +17,7 @@ module Bulkrax
 
       file_paths.is_a?(Array)
     rescue StandardError => e
-      status_info(e)
+      set_status_info(e)
       false
     end
 
