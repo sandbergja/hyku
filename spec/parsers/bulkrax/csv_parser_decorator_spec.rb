@@ -8,7 +8,7 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
                              only_updates: false,
                              file?: false,
                              parser_fields: {},
-                             status_info: double('Bulkrax::Status'),
+                             set_status_info: double('Bulkrax::Status'),
                              metadata_only?: true
       )
     )
@@ -153,8 +153,8 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
         expect(subject.valid_import?).to be false
       end
 
-      it 'rescues the error and calls status_info' do
-        expect(subject).to receive(:status_info) do |e|
+      it 'rescues the error and calls set_status_info' do
+        expect(subject).to receive(:set_status_info) do |e|
           expect(e).to be_a(StandardError)
           expect(e.message).to eq('Collection missing: title; GenericWork missing: title, creator')
         end
