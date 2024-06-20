@@ -7,7 +7,7 @@
   gtag('js', new Date());
 
   gtag('config', '<%= Hyrax::Analytics.config.analytics_id %>');
-  <% if ENV.fetch(GOOGLE_ANALYTICS_ID, Hyrax::Analytics.config.analytics_id) != Hyrax::Analytics.config.analytics_id %>
+  <% if ENV.fetch('GOOGLE_ANALYTICS_ID', Hyrax::Analytics.config.analytics_id) != Hyrax::Analytics.config.analytics_id %>
     gtag('config', '<%= ENV.fetch('GOOGLE_ANALYTICS_ID') %>');
   <% end %>
  window.analytics = gtag;
