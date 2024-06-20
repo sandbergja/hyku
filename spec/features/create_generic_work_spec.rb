@@ -61,7 +61,7 @@ RSpec.describe 'Create a GenericWork', type: :feature, js: true, clean: true do
       fill_in('Creator', with: 'Doe, Jane')
       click_on('Additional fields')
       fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights statement')
+      select('In Copyright', from: 'Rights Statement')
 
       page.choose('generic_work_visibility_open')
       # rubocop:disable Layout/LineLength
