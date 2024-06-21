@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v5.0.0rc2 Adjust permission checks for delete and add analytics button and add ENV to control turbolinks %>
+<%# OVERRIDE Hyrax v5.0.1 Adjust permission checks for delete and add analytics button and add ENV to control turbolinks %>
 <div class="row show-actions button-row-top-two-column">
   <div class="col-sm-6">
     <% if !workflow_restriction?(presenter) %>
@@ -36,13 +36,11 @@
           <button type="button" class="btn btn-secondary dropdown-toggle" type="button" id="dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <%= t('.attach_child') %>
           </button>
-          <ul class="dropdown-menu">
+          <div class="dropdown-menu">
             <% presenter.valid_child_concerns.each do |concern| %>
-              <li class="dropdown-item">
-                <%= link_to "Attach #{concern.human_readable_type}", polymorphic_path([main_app, :new, :hyrax, :parent, concern.model_name.singular.to_sym], parent_id: presenter.id) %>
-              </li>
+              <%= link_to "Attach #{concern.human_readable_type}", polymorphic_path([main_app, :new, :hyrax, :parent, concern.model_name.singular.to_sym], parent_id: presenter.id), class: "dropdown-item" %>
             <% end %>
-          </ul>
+          </div>
         </div>
       <% end %>
       <%# OVERRIDE to validate delete permission %>
