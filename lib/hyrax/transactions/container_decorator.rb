@@ -2,6 +2,8 @@
 
 # OVERRIDE Hyrax v5.0.0 to add custom relations to the change_set
 
+require_dependency 'hyku/transactions/steps/add_custom_relations'
+
 module Hyrax
   module Transactions
     module ContainerDecorator
