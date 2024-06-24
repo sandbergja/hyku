@@ -16,6 +16,8 @@ Hyrax.config do |config|
   #     quack the same.
   config.register_curation_concern :generic_work
   config.register_curation_concern :image
+  config.register_curation_concern :etd
+  config.register_curation_concern :oer
 
   # Identify the model class name that will be used for Collections in your app
   # (i.e. ::Collection for ActiveFedora, Hyrax::PcdmCollection for Valkyrie)
