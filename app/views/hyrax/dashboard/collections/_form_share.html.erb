@@ -28,6 +28,7 @@
                  Hyrax::Group.all.map { |g| [g.humanized_name, g.name] },
                  { prompt: "Select a group..." },
                  class: 'form-control' %>
+                 as
                 <%= builder.select :access,
                  access_options,
                  { prompt: "Select a role..." },
