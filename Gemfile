@@ -13,7 +13,7 @@ end
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0', github: 'rails/rails', branch: '6-1-stable'
+gem 'rails', '~> 6.1.7.8'
 
 gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'active-fedora', '~> 14.0'
@@ -56,7 +56,7 @@ gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'main'
+gem 'iiif_print'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'openssl', '>= 3.2.0'
