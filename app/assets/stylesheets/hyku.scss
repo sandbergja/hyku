@@ -520,16 +520,6 @@ body.public-facing {
   margin-top: 20px;
 }
 
-.navbar-toggler-icon {
-  background: no-repeat center center;
-  background-size: 100% 100%;
-  content: "";
-  display: inline-block;
-  height: 1.5em;
-  vertical-align: middle;
-  width: 1.5em;
-}
-
 // remove a button that appears on the facets menu in the catalog search results
 // clicking this button seemingly does nothing
 .catalog-index .facets-header > button {
@@ -538,7 +528,8 @@ body.public-facing {
 
 // make sure constraints are on only one line, even with markdown
 span.constraint-value p, .facet-values p {
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 0;
 }
 
