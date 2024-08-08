@@ -30,18 +30,24 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
 
   # Missing methods will be delegated to `instance` if an implementation is available.
   # Else `NoMethodError` will be raised via call to `super`
-  def self.method_missing method_name, *args
+  def self.method_missing(method_name, *args)
     if instance.respond_to? method_name
+      # rubocop:disable Rails/Output
       puts "** Defining new method: '#{method_name}'"
+      # rubocop:enable Rails/Output
       (class << self; self; end).instance_eval do
-        define_method(method_name) do |*args|
-          instance.send(method_name, *args)
+        define_method(method_name) do |*method_args|
+          instance.send(method_name, *method_args)
         end
       end
       instance.send(method_name, *args)
     else
       super
     end
+  end
+
+  def self.respond_to_missing?(method_name, include_private = false)
+    instance.respond_to?(method_name) || super
   end
 
   SETTINGS.each do |method|
@@ -201,7 +207,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   end
 
   # because this takes an arg, we dont memoize
-  def lambda_job(job_klass)
+  def lambda_job(_job_klass)
     @lambda_job = lambda { |line, _progress, job_klass|
       id = line.strip
       job_klass.perform_later(id)
