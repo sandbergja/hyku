@@ -127,22 +127,7 @@ module Sushi
     def report_items
       data_for_resource_types.map do |record|
         {
-          'Items' => [{
-            'Attribute_Performance' => [{
-              'Data_Type' => record.resource_type.titleize,
-              # We are only supporting the 'Regular' access method at this time. If that changes, we will need to update this.
-              'Access_Method' => 'Regular',
-              'Performance' => performance(record)
-            }],
-            'Authors' => Sushi::AuthorCoercion.deserialize(record.author).map { |author| { 'Name:' => author } },
-            'Item' => record.work_id.to_s,
-            'Publisher' => '',
-            'Platform' => account.cname,
-            'Item_ID' => {
-              'Proprietary': record.work_id.to_s,
-              'URI': "https://#{account.cname}/concern/#{record.worktype.underscore}s/#{record.work_id}"
-            }
-          }]
+          'Items' => [item_attributes(record)]
         }
       end
     end
@@ -184,6 +169,39 @@ module Sushi
       relation
     end
     # rubocop:enable Metrics/MethodLength
+
+    private 
+
+    def item_attributes(record)
+      {
+        'Attribute_Performance' => attribute_performance(record),
+        'Authors' => authors(record),
+        'Item' => record.work_id.to_s,
+        'Publisher' => '',
+        'Platform' => account.cname,
+        'Item_ID' => item_id(record)
+      }
+    end
+    
+    def attribute_performance(record)
+      [{
+        'Data_Type' => record.resource_type.titleize,
+        # We are only supporting the 'Regular' access method at this time. If that changes, we will need to update this.
+        'Access_Method' => 'Regular',
+        'Performance' => performance(record)
+      }]
+    end
+    
+    def authors(record)
+      Sushi::AuthorCoercion.deserialize(record.author).map { |author| { 'Name:' => author } }
+    end
+    
+    def item_id(record)
+      {
+        'Proprietary': record.work_id.to_s,
+        'URI': "https://#{account.cname}/concern/#{record.worktype.underscore}s/#{record.work_id}"
+      }
+    end
   end
   # rubocop:enable Metrics/ClassLength
 end
