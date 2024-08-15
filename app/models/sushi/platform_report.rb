@@ -140,16 +140,28 @@ module Sushi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def attribute_performance_for_platform
-      return [] if exclude_based_on_metric_type?
-      return [] if exclude_based_on_data_type?
-    
+      return [] if metric_type_in_params && metric_types.exclude?("Searches_Platform")
+      return [] if data_type_in_params && !data_types.find { |dt| dt.casecmp("Platform").zero? }
+
       [{
         "Data_Type" => "Platform",
         "Access_Method" => "Regular",
-        "Performance" => performance_for_platform
+        "Performance" => {
+          "Searches_Platform" => if granularity == 'Totals'
+                                   total_for_platform = data_for_platform.sum(&:total_item_investigations)
+                                   { "Totals" => total_for_platform }
+                                 else
+                                   data_for_platform.each_with_object({}) do |record, hash|
+                                     hash[record.year_month.strftime("%Y-%m")] = record.total_item_investigations
+                                     hash
+                                   end
+                                 end
+        }
       }]
     end
+    # rubocop:enable Metrics/MethodLength
 
     def performance(record)
       metric_types.each_with_object({}) do |metric_type, returning_hash|
@@ -176,13 +188,34 @@ module Sushi
     # also, note that unique_item_requests and unique_item_investigations should be counted for Hyrax::CounterMetrics that have unique dates, and unique work IDs.
     # see the docs for counting unique items here: https://cop5.projectcounter.org/en/5.1/07-processing/03-counting-unique-items.html
     # rubocop:disable Layout/LineLength
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
-      relation = build_base_relation
+      # We're capturing this relation/query because in some cases, we need to chain another where
+      # clause onto the relation.
+      relation = Hyrax::CounterMetric
+                 .select(:resource_type, :worktype,
+                         %((SELECT To_json(Array_agg(Row_to_json(t)))
+                           FROM
+                           (SELECT
+                           -- The AS field_name needs to be double quoted so as to preserve case structure.
+                           SUM(total_item_investigations) as "Total_Item_Investigations",
+                           SUM(total_item_requests) as "Total_Item_Requests",
+                           COUNT(DISTINCT CASE WHEN total_item_investigations IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Investigations",
+                           COUNT(DISTINCT CASE WHEN total_item_requests IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Requests",
+                           -- We need to coerce the month from a single digit to two digits (e.g. August's "8" into "08")
+                           CONCAT(DATE_PART('year', date_trunc('month', date)), '-', to_char(DATE_PART('month', date_trunc('month', date)), 'fm00')) AS year_month
+                           FROM hyrax_counter_metrics AS aggr
+                           WHERE #{Hyrax::CounterMetric.sanitize_sql_for_conditions(['aggr.resource_type = hyrax_counter_metrics.resource_type AND date >= ? AND date <= ?', begin_date, end_date])}
+	               GROUP BY date_trunc('month', date)) t) as performance))
+                 .where("date >= ? AND date <= ?", begin_date, end_date)
+                 .order(resource_type: :asc)
+                 .group(:resource_type, :worktype)
       return relation if data_types.blank?
-    
+
       relation.where("LOWER(resource_type) IN (?)", data_types)
     end
     # rubocop:enable Layout/LineLength
+    # rubocop:enable Metrics/MethodLength
 
     def data_for_platform
       Hyrax::CounterMetric
@@ -192,58 +225,6 @@ module Sushi
         .where("date >= ? AND date <= ?", begin_date, end_date)
         .order("year_month")
         .group("date_trunc('month', date)")
-    end
-
-  private
-
-    def exclude_based_on_metric_type?
-      metric_type_in_params && metric_types.exclude?("Searches_Platform")
-    end
-
-    def exclude_based_on_data_type?
-      data_type_in_params && !data_types.any? { |dt| dt.casecmp("Platform").zero? }
-    end
-
-    def performance_for_platform
-      if granularity == 'Totals'
-        { "Totals" => total_for_platform }
-      else
-        performance_by_month
-      end
-    end
-
-    def total_for_platform
-      data_for_platform.sum(&:total_item_investigations)
-    end
-
-    def performance_by_month
-      data_for_platform.each_with_object({}) do |record, hash|
-        hash[record.year_month.strftime("%Y-%m")] = record.total_item_investigations
-      end
-    end
-
-    def build_base_relation
-      Hyrax::CounterMetric
-        .select(:resource_type, :worktype, performance_query)
-        .where("date >= ? AND date <= ?", begin_date, end_date)
-        .order(resource_type: :asc)
-        .group(:resource_type, :worktype)
-    end
-    
-    def performance_query
-      %((SELECT To_json(Array_agg(Row_to_json(t)))
-        FROM
-        (SELECT
-          -- The AS field_name needs to be double quoted so as to preserve case structure.
-          SUM(total_item_investigations) as "Total_Item_Investigations",
-          SUM(total_item_requests) as "Total_Item_Requests",
-          COUNT(DISTINCT CASE WHEN total_item_investigations IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Investigations",
-          COUNT(DISTINCT CASE WHEN total_item_requests IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Requests",
-          -- We need to coerce the month from a single digit to two digits (e.g. August's "8" into "08")
-          CONCAT(DATE_PART('year', date_trunc('month', date)), '-', to_char(DATE_PART('month', date_trunc('month', date)), 'fm00')) AS year_month
-          FROM hyrax_counter_metrics AS aggr
-          WHERE #{Hyrax::CounterMetric.sanitize_sql_for_conditions(['aggr.resource_type = hyrax_counter_metrics.resource_type AND date >= ? AND date <= ?', begin_date, end_date])}
-          GROUP BY date_trunc('month', date)) t) as performance)
     end
   end
   # rubocop:enable Metrics/ClassLength

@@ -124,11 +124,35 @@ module Sushi
     #       query result value would be "2023-01-01T00:00" (e.g. the first moment of the first of the
     #       month).
     # rubocop:disable Layout/LineLength
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
-      relation = build_base_relation
-      filter_by_data_types(relation)
+      # We're capturing this relation/query because in some cases, we need to chain another where
+      # clause onto the relation.
+      relation = Hyrax::CounterMetric
+                 .select(:resource_type, :worktype,
+                         %((SELECT To_json(Array_agg(Row_to_json(t)))
+                           FROM
+                           (SELECT
+                           -- The AS field_name needs to be double quoted so as to preserve case structure.
+                           SUM(total_item_investigations) as "Total_Item_Investigations",
+                           SUM(total_item_requests) as "Total_Item_Requests",
+                           COUNT(DISTINCT CASE WHEN total_item_investigations IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Investigations",
+                           COUNT(DISTINCT CASE WHEN total_item_requests IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Requests",
+                           -- We need to coerce the month from a single digit to two digits (e.g. August's "8" into "08")
+                           CONCAT(DATE_PART('year', date_trunc('month', date)), '-', to_char(DATE_PART('month', date_trunc('month', date)), 'fm00')) AS year_month
+                           FROM hyrax_counter_metrics AS aggr
+                           WHERE #{Hyrax::CounterMetric.sanitize_sql_for_conditions(['aggr.resource_type = hyrax_counter_metrics.resource_type AND date >= ? AND date <= ?', begin_date, end_date])}
+	               GROUP BY date_trunc('month', date)) t) as performance))
+                 .where("date >= ? AND date <= ?", begin_date, end_date)
+                 .order(resource_type: :asc)
+                 .group(:resource_type, :worktype)
+
+      return relation if data_types.blank?
+
+      relation.where("LOWER(resource_type) IN (?)", data_types)
     end
     # rubocop:enable Layout/LineLength
+    # rubocop:enable Metrics/MethodLength
 
     def data_for_platform
       Hyrax::CounterMetric
@@ -138,42 +162,6 @@ module Sushi
         .where("date >= ? AND date <= ?", begin_date, end_date)
         .order("year_month")
         .group("date_trunc('month', date)")
-    end
-
-    private
-
-    def build_base_relation
-      Hyrax::CounterMetric
-        .select(:resource_type, :worktype, performance_query)
-        .where("date >= ? AND date <= ?", begin_date, end_date)
-        .order(resource_type: :asc)
-        .group(:resource_type, :worktype)
-    end
-
-    def performance_query
-      %((SELECT To_json(Array_agg(Row_to_json(t)))
-        FROM
-        (SELECT
-          -- The AS field_name needs to be double quoted so as to preserve case structure.
-          SUM(total_item_investigations) as "Total_Item_Investigations",
-          SUM(total_item_requests) as "Total_Item_Requests",
-          COUNT(DISTINCT CASE WHEN total_item_investigations IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Investigations",
-          COUNT(DISTINCT CASE WHEN total_item_requests IS NOT NULL THEN CONCAT(work_id, '_', date::text) END) as "Unique_Item_Requests",
-          -- We need to coerce the month from a single digit to two digits (e.g. August's "8" into "08")
-          CONCAT(DATE_PART('year', date_trunc('month', date)), '-', to_char(DATE_PART('month', date_trunc('month', date)), 'fm00')) AS year_month
-          FROM hyrax_counter_metrics AS aggr
-          WHERE #{conditions_for_performance_query}
-          GROUP BY date_trunc('month', date)) t) as performance)
-    end
-
-    def conditions_for_performance_query
-      Hyrax::CounterMetric.sanitize_sql_for_conditions(['aggr.resource_type = hyrax_counter_metrics.resource_type AND date >= ? AND date <= ?', begin_date, end_date])
-    end
-
-    def filter_by_data_types(relation)
-      return relation if data_types.blank?
-
-      relation.where("LOWER(resource_type) IN (?)", data_types)
     end
   end
   # rubocop:enable Metrics/ClassLength

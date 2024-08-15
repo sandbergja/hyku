@@ -146,4 +146,4 @@ gem 'willow_sword', github: 'scientist-softserv/willow_sword', branch: 'main'
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/MethodLength
