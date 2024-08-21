@@ -46,7 +46,11 @@ module Hyrax
     # rubocop:disable Metrics/MethodLength
     def index
       @featured_researcher = ContentBlock.for(:researcher)
+      @marketing_text = ContentBlock.for(:marketing)
       @home_text = ContentBlock.for(:home_text) # hyrax v3.5.0 added @home_text - Adding Themes
+      @announcement_text = ContentBlock.for(:announcement)
+      @homepage_about_section_heading = ContentBlock.for(:homepage_about_section_heading)
+      @homepage_about_section_content = ContentBlock.for(:homepage_about_section_content)
       @featured_work_list = FeaturedWorkList.new
       @featured_collection_list = FeaturedCollectionList.new # OVERRIDE here to add featured collection list
       load_shared_info
