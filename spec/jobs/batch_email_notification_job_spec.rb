@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe BatchEmailNotificationJob do
+  let(:subject) { BatchEmailNotificationJob.perform_now }
   let(:account) { create(:account_with_public_schema) }
   let(:receipt) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
   let!(:message) { receipt.notification }
@@ -17,62 +18,70 @@ RSpec.describe BatchEmailNotificationJob do
   end
 
   describe '#perform' do
-    let(:frequency) { 'daily' }
-
-    it 'marks the message as delivered' do
-      expect { BatchEmailNotificationJob.perform_now }.to change { message.receipts.first.is_delivered }.from(false).to(true)
+    before do
+      UserBatchEmail.find_or_create_by(user: user).update(last_emailed_at: last_emailed)
     end
 
-    it 're-enqueues the job' do
-      expect { BatchEmailNotificationJob.perform_now }.to have_enqueued_job(BatchEmailNotificationJob)
+    context 'basic job behavior' do
+      let(:frequency) { 'daily' }
+      let(:last_emailed) { nil }
+
+      it 'marks the message as delivered' do
+        expect { subject }.to change { message.receipts.first.is_delivered }.from(false).to(true)
+      end
+
+      it 're-enqueues the job' do
+        expect { subject }.to have_enqueued_job(BatchEmailNotificationJob)
+      end
     end
 
     context 'when the user has a daily frequency' do
       let(:frequency) { 'daily' }
+      let(:last_emailed) { 1.day.ago }
 
       it 'sends email to users with batch_email_frequency set' do
-        expect { BatchEmailNotificationJob.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
     context 'when the user has a weekly frequency' do
       let(:frequency) { 'weekly' }
-      let(:user) { FactoryBot.create(:user, batch_email_frequency: frequency, last_emailed_at:) }
+      let(:user) { FactoryBot.create(:user, batch_email_frequency: frequency) }
 
       context 'when the user was last emailed less than a week ago' do
-        let(:last_emailed_at) { 5.days.ago }
+        let(:last_emailed) { 5.days.ago }
 
         it 'does not send an email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now }.to_not change { ActionMailer::Base.deliveries.count }
+          expect { subject }.to_not change { ActionMailer::Base.deliveries.count }
         end
       end
 
       context 'when the user was last emailed more than a week ago' do
-        let(:last_emailed_at) { 8.days.ago }
+        let(:last_emailed) { 8.days.ago }
 
         it 'sends email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
     end
 
     context 'when the user has a monthly frequency' do
       let(:frequency) { 'monthly' }
-      let(:user) { FactoryBot.create(:user, batch_email_frequency: frequency, last_emailed_at:) }
+      let(:user) { FactoryBot.create(:user, batch_email_frequency: frequency) }
 
       context 'when the user was last emailed less than a month ago' do
-        let(:last_emailed_at) { 20.days.ago }
+        let(:last_emailed) { 20.days.ago }
 
         it 'does not send an email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now(account) }.to_not change { ActionMailer::Base.deliveries.count }
+          expect { subject }.to_not change { ActionMailer::Base.deliveries.count }
         end
       end
 
       context 'when the user was last emailed more than a month ago' do
-        let(:last_emailed_at) { 40.days.ago }
+        let(:last_emailed) { 40.days.ago }
 
         it 'sends email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
     end
