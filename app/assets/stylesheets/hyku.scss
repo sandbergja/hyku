@@ -428,7 +428,7 @@ div#collapse-citations {
 }
 
 @media (min-width: 576px) {
-  .citations-button .download-pdf-button {
+  .citations-button .file_download {
     max-width: 300px;
   }
 }
@@ -552,7 +552,7 @@ span.constraint-value p, .facet-values p {
   }
 }
 
-#download-pdf-button {
+#file_download {
   margin: 10px 0 10px 0;
 }
 
