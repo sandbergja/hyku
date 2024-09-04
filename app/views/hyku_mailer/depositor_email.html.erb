@@ -20,7 +20,7 @@
   <body>
     <div class="email-container">
       <p>Dear Author,</p>
-      <p>You had <%= pluralize(@statistics[:new_file_downloads], 'new download') %> in <%= Date.today.prev_month.strftime("%B %Y") %> across your <%= pluralize(@statistics[:new_work_views], 'new work') %> in <%= @application_name %>. Your current readership:</p>
+      <p>You had <%= "#{@statistics[:new_file_downloads]} new files downloaded" %> in <%= Date.today.prev_month.strftime("%B %Y") %> and <%= "#{@statistics[:new_work_views]} new works viewed" %> in <%= @application_name %>. Your current readership:</p>
       <ul>
         <li><%= pluralize(@statistics[:total_file_downloads], 'Total File Download') %></li>
         <li><%= pluralize(@statistics[:total_work_views], 'Total Work View') %></li>
