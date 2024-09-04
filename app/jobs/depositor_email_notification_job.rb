@@ -8,7 +8,6 @@ class DepositorEmailNotificationJob < ApplicationJob
       statistics = user.statistics_for
       next if statistics.nil?
 
-      # Skip if new_work_views and new_file_downloads is 0
       next if statistics[:new_work_views].zero? && statistics[:new_file_downloads].zero?
 
       HykuMailer.depositor_email(user, statistics, current_account).deliver_now
