@@ -695,3 +695,10 @@ tr[data-feature="use-iiif-print"] {
     transition: 0.1s;
   }
 }
+
+// Featured collection
+#featured_collections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
