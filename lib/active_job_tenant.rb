@@ -40,7 +40,7 @@ module ActiveJobTenant
       if queue == 'sidekiq'
         result = find_job_with_in_redis(queue: Sidekiq::Queue.new(queue_name), klass: klass, tenant_id: tenant_id)
         result ||= find_job_with_in_redis(queue: Sidekiq::ScheduledSet.new, klass: klass, tenant_id: tenant_id)
-        result ||= find_job_with_in_redis(queue: Sidekiq::RetrySet.new, klass: klass, tenant_id: tenant_id)
+        result || find_job_with_in_redis(queue: Sidekiq::RetrySet.new, klass: klass, tenant_id: tenant_id)
       elsif queue == 'good_job'
         if tenant_id.present?
           GoodJob::Job.where("finished_at is null and serialized_params->>'tenant' = ? and serialized_params->>'job_class' = ?", tenant_id, klass).any?
