@@ -248,7 +248,7 @@ module Hyku
       DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
       begin
         TenantMaintenanceJob.perform_later unless ActiveJob::Base.find_job(klass: TenantMaintenanceJob)
-      rescue Redis::CannotConnectError
+      rescue
         Rails.logger.error('No background job queue connection, skipping add of TenantMaintenanceJob')
       end
     end
