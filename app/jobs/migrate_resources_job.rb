@@ -14,8 +14,8 @@ class MigrateResourcesJob < ApplicationJob
         fm = form_for(model:).constantize.new(resource: res)
         # save the form
         result = Hyrax::Transactions::Container[collection_model_event_mapping[model]]
-          .call(fm)
-        converted = result.value!
+                 .call(fm)
+        result.value!
       end
     end
   end
