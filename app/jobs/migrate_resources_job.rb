@@ -13,9 +13,9 @@ class MigrateResourcesJob < ApplicationJob
         # start with a form for the resource
         fm = form_for(model:).constantize.new(resource: res)
         # save the form
-        converted = Hyrax.persister.save(resource: fm)
-        # reindex
-        Hyrax.index_adapter.save(resource: converted)
+        result = Hyrax::Transactions::Container[collection_model_event_mapping[model]]
+                 .call(fm)
+        result.value!
       end
     end
   end
@@ -26,5 +26,12 @@ class MigrateResourcesJob < ApplicationJob
 
   def collection_models_list
     %w[AdminSet Collection]
+  end
+
+  def collection_model_event_mapping
+    {
+      'AdminSet' => 'admin_set_resource.update',
+      'Collection' => 'change_set.update_collection'
+    }
   end
 end
