@@ -21,7 +21,6 @@ module HykuIndexing
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
         solr_doc['valkyrie_bsi'] = object.kind_of?(Valkyrie::Resource)
         solr_doc['member_ids_ssim'] = object.member_ids.map(&:id) if object.kind_of?(Valkyrie::Resource)
-        # TODO: Reinstate once valkyrie fileset work is complete - https://github.com/scientist-softserv/hykuup_knapsack/issues/34
         solr_doc['all_text_tsimv'] = full_text(object)
         # rubocop:enable Style/ClassCheck
         solr_doc['title_ssim'] = SortTitle.new(object.title.first).alphabetical
