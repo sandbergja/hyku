@@ -7,7 +7,6 @@ class CollectionResource < Hyrax::PcdmCollection
   include Hyrax::Schema(:bulkrax_metadata)
   include Hyrax::Schema(:collection_resource)
   include Hyrax::ArResource
-  include HykuIndexing
 
   Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection)
 
