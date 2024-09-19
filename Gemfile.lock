@@ -1005,7 +1005,7 @@ GEM
       rails (> 3.2.0)
     openssl (3.2.0)
     optimist (3.1.0)
-    order_already (0.3.1)
+    order_already (0.3.2)
       rails-html-sanitizer (~> 1.4)
     orm_adapter (0.5.0)
     os (1.1.4)
@@ -1528,7 +1528,7 @@ DEPENDENCIES
   omniauth-saml (~> 2.1)
   omniauth_openid_connect
   openssl (>= 3.2.0)
-  order_already
+  order_already (~> 0.3.2)
   parser (>= 3.1.0.0)
   pg
   postrank-uri (>= 1.0.24)
