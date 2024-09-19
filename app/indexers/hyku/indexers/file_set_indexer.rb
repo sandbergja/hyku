@@ -18,7 +18,7 @@ module Hyku
 
       # rubocop:disable Metrics/MethodLength
       def pdf_text
-        return unless resource.original_file.pdf?
+        return unless resource.original_file&.pdf?
         return unless resource.original_file&.content.is_a? String
 
         begin

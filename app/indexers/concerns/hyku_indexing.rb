@@ -21,7 +21,7 @@ module HykuIndexing
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
         solr_doc['valkyrie_bsi'] = object.kind_of?(Valkyrie::Resource)
         solr_doc['member_ids_ssim'] = object.member_ids.map(&:id) if object.kind_of?(Valkyrie::Resource)
-        solr_doc['all_text_tsimv'] = full_text(object)
+        solr_doc['all_text_tsimv'] = extract_full_text(object)
         # rubocop:enable Style/ClassCheck
         solr_doc['title_ssim'] = SortTitle.new(object.title.first).alphabetical
         solr_doc['depositor_ssi'] = object.depositor
@@ -37,7 +37,7 @@ module HykuIndexing
 
   private
 
-  def full_text(object)
+  def extract_full_text(object)
     child_works = Hyrax.custom_queries.find_child_works(resource: object)
 
     if child_works.empty?
