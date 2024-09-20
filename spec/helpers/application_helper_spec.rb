@@ -5,9 +5,22 @@ RSpec.describe ApplicationHelper, type: :helper do
     let(:header) { '# header' }
     let(:bold) { '*bold*' }
 
-    it 'renders markdown into html' do
-      expect(helper.markdown(header)).to eq("<h1>header</h1>\n")
-      expect(helper.markdown(bold)).to eq("<p><em>bold</em></p>\n")
+    context 'when treat_some_user_inputs_as_markdown is true' do
+      it 'renders markdown into html' do
+        allow(Flipflop).to receive(:treat_some_user_inputs_as_markdown?).and_return(true)
+
+        expect(helper.markdown(header)).to eq("<h1>header</h1>\n")
+        expect(helper.markdown(bold)).to eq("<p><em>bold</em></p>\n")
+      end
+    end
+
+    context 'when treat_some_user_inputs_as_markdown is false' do
+      it 'does not render markdown into html' do
+        allow(Flipflop).to receive(:treat_some_user_inputs_as_markdown?).and_return(false)
+
+        expect(helper.markdown(header)).to eq('# header')
+        expect(helper.markdown(bold)).to eq('*bold*')
+      end
     end
   end
 
