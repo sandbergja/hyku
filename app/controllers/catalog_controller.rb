@@ -12,11 +12,11 @@ class CatalogController < ApplicationController
   before_action :enforce_show_permissions, only: :show
 
   def self.created_field
-    'date_created_ssim'
+    'date_created_ssi'
   end
 
   def self.creator_field
-    'creator_ssim'
+    'creator_ssi'
   end
 
   def self.modified_field
@@ -24,7 +24,7 @@ class CatalogController < ApplicationController
   end
 
   def self.title_field
-    'title_ssim'
+    'title_ssi'
   end
 
   def self.uploaded_field

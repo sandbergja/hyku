@@ -23,9 +23,9 @@ module HykuIndexing
         solr_doc['member_ids_ssim'] = object.member_ids.map(&:id) if object.kind_of?(Valkyrie::Resource)
         solr_doc['all_text_tsimv'] = extract_full_text(object)
         # rubocop:enable Style/ClassCheck
-        solr_doc['title_ssim'] = SortTitle.new(object.title.first).alphabetical
+        solr_doc['title_ssi'] = SortTitle.new(object.title.first).alphabetical
         solr_doc['depositor_ssi'] = object.depositor
-        solr_doc['creator_ssim'] = object.creator&.first
+        solr_doc['creator_ssi'] = object.creator&.first
         if object.respond_to?(:date_created)
           solr_doc[CatalogController.created_field] =
             Array(object.date_created).first
