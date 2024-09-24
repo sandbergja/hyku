@@ -13,12 +13,17 @@
       <% else %>
         <div class="hyc-generic">
       <% end %>
-
-      <div class="hyc-title">
-        <h1><%= markdown(@presenter.title.first) %></h1>
-        <%= @presenter.collection_type_badge %>
-        <%= @presenter.permission_badge %>
+      <div class="d-flex space-between">
+        <div class="hyc-title">
+          <h1><%= markdown(@presenter.title.first) %></h1>
+          <%= @presenter.collection_type_badge %>
+          <%= @presenter.permission_badge %>
+        </div>
+        <div class="hyc-item-count">
+          <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %>
+        </div>
       </div>
+
 
       <% unless @presenter.logo_record.blank? %>
           <div class="hyc-logos">
@@ -37,10 +42,7 @@
       <% end %>
 
       <% unless @presenter.total_viewable_items.blank? %>
-          <div class="hyc-bugs">
-            <div class="hyc-item-count">
-              <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %></div>
-
+          <div class="hyc-bugs d-flex space-between">
               <% unless @presenter.creator.blank? %>
                   <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
               <% end %>

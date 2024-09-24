@@ -397,6 +397,11 @@ a.btn.btn-default.restore-default-color.with-color-hint {
       width: 50%;
     }
   }
+
+  // makes hamburger menu visible for mobile
+  .navbar-toggler-icon {
+    display: inline-block !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -574,6 +579,15 @@ span.constraint-value p, .facet-values p {
   .hyc-bugs .hyc-last-updated,
   .hyc-title {
     padding: 0;
+
+    h1 {
+      color: #000;
+    }
+  }
+
+  .hyc-created-by,
+  .hyc-last-updated {
+    color: #000 !important;
   }
 
   .hyc-item-count {
