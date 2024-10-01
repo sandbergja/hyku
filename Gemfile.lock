@@ -206,7 +206,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/willow_sword.git
-  revision: 904313fcb669837b363d7095db8e6b7a818d0e21
+  revision: 64d0b818bc2a31c158baa80cc6af107715b50a94
   branch: main
   specs:
     willow_sword (0.2.0)
